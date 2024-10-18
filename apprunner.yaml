@@ -10,4 +10,4 @@ run:
   pre-run:  
     - pip3 install pipenv
     - pipenv install
-    - python3 bot.py
+  command: python3 bot.py
