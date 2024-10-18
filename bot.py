@@ -8,10 +8,6 @@ import discord
 
 load_dotenv()
 
-client = openai.OpenAI(api_key=os.environ.get("open_ai_key"))
-
-discord_token = os.environ.get("discord_token")
-discord_guild = os.environ.get("")
 
 intents = discord.Intents.all()
 
@@ -19,7 +15,6 @@ intents.messages = True
 intents.message_content = True
 
 discord_client = discord.Client(intents=intents)
-
 
 OFFENSE_CATEGORY=(
     "offensive", 
@@ -158,5 +153,14 @@ async def on_member_join(member):
 
 
 if __name__ == "__main__":
+
+    open_ai_key = os.environ.get("open_ai_key")
+
+    discord_token = os.environ.get("discord_token")
+
+    assert all((open_ai_key is not None, discord_token is not None)), "Token and OpenAI key are required."
+
+    client = openai.OpenAI(api_key=os.environ.get("open_ai_key"))
+
 
     discord_client.run(discord_token)
