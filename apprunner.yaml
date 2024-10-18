@@ -1,5 +1,5 @@
 version: 1.0
-runtime: Python 3.11 (python311)
+runtime: Python311
 build:
   commands:
     build:
