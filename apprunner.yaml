@@ -1,9 +1,13 @@
 version: 1.0
-runtime: Python311
+runtime: python311
 build:
   commands:
-    build:
+    build:        
       - pip3 install pipenv
       - pipenv install
 run:
-  command: pipenv run python bot.py
+  runtime-version: 3.11
+  pre-run:  
+    - pip3 install pipenv
+    - pipenv install
+    - python3 bot.py
