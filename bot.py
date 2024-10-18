@@ -13,7 +13,7 @@ client = openai.OpenAI(api_key=os.environ.get("open_ai_key"))
 discord_token = os.environ.get("discord_token")
 discord_guild = os.environ.get("")
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 
 intents.messages = True
 intents.message_content = True
@@ -84,6 +84,35 @@ def _welcome_member(username, servername):
 
     return response.choices[0].text.strip()
 
+def __prepare_messages(user_messages:str):
+
+    system = Prompt(
+        role="system",
+        content=COMMUNITY_GIDELINES
+    )
+
+    user_prompt = Prompt(
+        role="user",
+        content=user_messages
+    )
+
+    messages = Messages(
+        messages=[
+            system,
+            user_prompt
+        ]
+    )
+
+    return messages
+
+async def act(message, offense_category):
+
+    if offense_category == "neutral":
+        return
+    
+    await message.delete()
+    await message.channel.send(f"{message.author.mention} - your message was removed for violating the community guidelines.")
+
 @discord_client.event
 async def on_ready():
     print(f'Logged in as {discord_client.user}')
@@ -96,31 +125,24 @@ async def on_message(message):
 
         return
 
-    system_prompt = Prompt(
-        role="system",
-        content=COMMUNITY_GIDELINES
-    ) 
-
-    user_prompt = Prompt(
-        role="user",
-        content=message.content
-    )
-
-    messages = Messages(
-        messages=[
-            system_prompt,
-            user_prompt
-        ]
-    )
+    messages = __prepare_messages(user_messages=message.content)
     
     offense_category = _ask_gpt(messages=messages)
 
-    if offense_category == "neutral":
+    await act(message=message, offense_category=offense_category)
 
-        return
-    
-    await message.delete()
-    await message.channel.send(f"{message.author.mention} - your message was removed for violating the community guidelines.")
+@discord_client.event
+async def on_message_edit(before, after):
+
+    offense = _ask_gpt(messages=__prepare_messages(user_messages=after.content))
+
+    print(offense)
+
+    print(before.content)
+
+    print(after.content)
+
+    await act(message=after, offense_category=offense)
 
 
 @discord_client.event
