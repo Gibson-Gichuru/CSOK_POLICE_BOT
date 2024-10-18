@@ -6,4 +6,4 @@ build:
       - pip3 install pipenv
       - pipenv install
 run:
-  command: pipenv run python3 bot.py
+  command: pipenv run python bot.py
