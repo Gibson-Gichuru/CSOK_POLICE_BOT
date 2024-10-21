@@ -9,3 +9,9 @@ run:
   pre-run:  
     - pip3 install -r requirements.txt
   command: python3 bot.py
+
+environment:
+  variables:
+    open_ai_key: {{ secrets_manager:CSOK_POLICE_SECRETS:open_ai_key }}
+    discord_token: {{ secrets_manager:CSOK_POLICE_SECRETS:discord_token }}
+
