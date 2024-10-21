@@ -9,10 +9,8 @@ run:
   pre-run:  
     - pip3 install -r requirements.txt
   command: python3 bot.py
-
   secrets:
     - name: open_ai_key
-      value-from: "arn:aws:secretsmanager:us-east-1:058264240189:secret:CSOK_POLICE_SECRETS-CUBdKB"
-    
+      value-from: "arn:aws:secretsmanager:us-east-1:058264240189:secret:CSOK_POLICE_SECRETS-CUBdKB:open_ai_key::"
     - name: discord_token
-      value-from: "arn:aws:secretsmanager:us-east-1:058264240189:secret:CSOK_POLICE_SECRETS-8XxJ2"
+      value-from: "arn:aws:secretsmanager:us-east-1:058264240189:secret:CSOK_POLICE_SECRETS-8XxJ2:discord_token::"
