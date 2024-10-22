@@ -132,19 +132,6 @@ async def on_message(message):
 
     await act(message=message, offense_category=offense_category)
 
-@discord_client.event
-async def on_message_edit(before, after):
-
-    offense = _ask_gpt(messages=__prepare_messages(user_messages=after.content))
-
-    print(offense)
-
-    print(before.content)
-
-    print(after.content)
-
-    await act(message=after, offense_category=offense)
-
 
 @discord_client.event
 async def on_member_join(member):
