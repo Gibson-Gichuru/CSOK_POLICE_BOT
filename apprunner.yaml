@@ -13,4 +13,4 @@ run:
     - name: open_ai_key
       value-from: "arn:aws:secretsmanager:us-east-1:058264240189:secret:CSOK_POLICE_SECRETS-CUBdKB"
     - name: discord_token
-      value-from: "arn:aws:secretsmanager:us-east-1:058264240189:secret:CSOK_POLICE_SECRETS-8XxJ2"
+      value-from: "arn:aws:secretsmanager:us-east-1:058264240189:secret:CSOK_POLICE_SECRETS-CUBdKB"
