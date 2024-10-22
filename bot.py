@@ -158,7 +158,10 @@ if __name__ == "__main__":
 
     discord_token = os.environ.get("discord_token")
 
-    assert all((open_ai_key is not None, discord_token is not None)), "Token and OpenAI key are required."
+    assert all((
+        open_ai_key is not None and open_ai_key != "", 
+        discord_token is not None and discord_token != "",
+    )), "Token and OpenAI key are required."
 
     client = openai.OpenAI(api_key=os.environ.get("open_ai_key"))
 
