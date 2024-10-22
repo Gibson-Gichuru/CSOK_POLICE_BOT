@@ -1,13 +1,19 @@
-import json
+import requests
 import os
 import openai
 from dataclasses import dataclass
 from typing import List
 from dotenv import load_dotenv
 import discord
+import threading
+import signal
+import sys
+from flask import Flask, request
 
 load_dotenv()
 
+
+flask_app = Flask(__name__)
 
 intents = discord.Intents.all()
 
@@ -152,6 +158,18 @@ async def on_member_join(member):
         await channel.send(welcome_message)
 
 
+#### Just to make the app runner pass the health check
+
+@flask_app.route("/")
+def health():
+    return "OK", 200
+
+
+def run_discord_bot(discord_token):
+
+    discord_client.run(discord_token)
+
+
 if __name__ == "__main__":
 
     open_ai_key = os.environ.get("open_ai_key")
@@ -165,5 +183,8 @@ if __name__ == "__main__":
 
     client = openai.OpenAI(api_key=os.environ.get("open_ai_key"))
 
+    discord_thread = threading.Thread(target=run_discord_bot, args=(discord_token,))
 
-    discord_client.run(discord_token)
+    discord_thread.start()
+
+    flask_app.run(host="0.0.0.0", port=8080)
